@@ -44,15 +44,20 @@ export const login = catchAsyncErrors(async (req, res, next) => {
 });
 
 export const logout = catchAsyncErrors(async (req, res, next) => {
+  const isProduction = process.env.NODE_ENV === "production";
+
   res
-    .status(201)
+    .status(200)
     .cookie("token", "", {
       httpOnly: true,
-      expires: new Date(Date.now()),
+      expires: new Date(0),
+      sameSite: isProduction ? "none" : "lax", // none for production, lax for local dev
+      secure: isProduction,                    // only true in production
+      path: "/",                               // ensure path matches login cookie
     })
     .json({
       success: true,
-      message: "Logged Out Successfully !",
+      message: "Logged Out Successfully!",
     });
 });
 
