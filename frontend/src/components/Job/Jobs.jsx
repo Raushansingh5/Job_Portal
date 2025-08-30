@@ -7,20 +7,17 @@ const Jobs = () => {
   const [jobs, setJobs] = useState([]);
   const { isAuthorized } = useContext(Context);
   const navigateTo = useNavigate();
-   const API_URL = import.meta.env.VITE_API_URL;
+  const API_URL = import.meta.env.VITE_API_URL;
+
   useEffect(() => {
-    try {
-      axios
-        .get(`${API_URL}/api/v1/job/getall`, {
-          withCredentials: true,
-        })
-        .then((res) => {
-          setJobs(res.data);
-        });
-    } catch (error) {
-      console.log(error);
-    }
-  }, []);
+    axios
+      .get(`${API_URL}/api/v1/job/getall`, { withCredentials: true })
+      .then((res) => {
+        setJobs(res.data);
+      })
+      .catch((err) => console.log(err));
+  }, [API_URL]);
+
   if (!isAuthorized) {
     navigateTo("/");
   }
@@ -31,16 +28,14 @@ const Jobs = () => {
         <h1>ALL AVAILABLE JOBS</h1>
         <div className="banner">
           {jobs.jobs &&
-            jobs.jobs.map((element) => {
-              return (
-                <div className="card" key={element._id}>
-                  <p>{element.title}</p>
-                  <p>{element.category}</p>
-                  <p>{element.country}</p>
-                  <Link to={`/job/${element._id}`}>Job Details</Link>
-                </div>
-              );
-            })}
+            jobs.jobs.map((element) => (
+              <div className="card" key={element._id}>
+                <p>{element.title}</p>
+                <p>{element.category}</p>
+                <p>{element.country}</p>
+                <Link to={`/job/${element._id}`}>Job Details</Link>
+              </div>
+            ))}
         </div>
       </div>
     </section>

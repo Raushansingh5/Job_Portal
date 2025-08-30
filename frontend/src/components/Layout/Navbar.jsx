@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { GiHamburgerMenu } from "react-icons/gi";
-import { AiOutlineClose } from "react-icons/ai"; // Import the close icon
+import { AiOutlineClose } from "react-icons/ai";
 
 const Navbar = () => {
   const [show, setShow] = useState(false);
@@ -14,22 +14,22 @@ const Navbar = () => {
 
   const handleLogout = async () => {
     try {
-      const response = await axios.get(
-        `${API_URL}/api/v1/user/logout`,
-        {
-          withCredentials: true,
-        }
-      );
+      const response = await axios.get(`${API_URL}/api/v1/user/logout`, {
+        withCredentials: true,
+      });
       toast.success(response.data.message);
       setIsAuthorized(false);
       navigateTo("/login");
     } catch (error) {
-      toast.error(error.response.data.message), setIsAuthorized(true);
+      toast.error(error.response?.data?.message || "Logout failed");
+      setIsAuthorized(true);
     }
   };
 
+  if (!isAuthorized) return null;
+
   return (
-    <nav className={isAuthorized ? "navbarShow" : "navbarHide"}>
+    <nav className="navbarShow">
       <div className="container">
         <div className="logo">
           <img src="/careerconnect-white.png" alt="logo" />
@@ -45,15 +45,20 @@ const Navbar = () => {
               ALL JOBS
             </Link>
           </li>
-          <li>
-            <Link to={"/applications/me"} onClick={() => setShow(false)}>
-              {user && user.role === "Employer"
-                ? "APPLICANT'S APPLICATIONS"
-                : "MY APPLICATIONS"}
-            </Link>
-          </li>
-          {user && user.role === "Employer" ? (
+          {user?.role === "Job Seeker" && (
+            <li>
+              <Link to={"/applications/me"} onClick={() => setShow(false)}>
+                MY APPLICATIONS
+              </Link>
+            </li>
+          )}
+          {user?.role === "Employer" && (
             <>
+              <li>
+                <Link to={"/applications/me"} onClick={() => setShow(false)}>
+                  APPLICANT'S APPLICATIONS
+                </Link>
+              </li>
               <li>
                 <Link to={"/job/post"} onClick={() => setShow(false)}>
                   POST NEW JOB
@@ -65,8 +70,7 @@ const Navbar = () => {
                 </Link>
               </li>
             </>
-          ) : null}
-
+          )}
           <button onClick={handleLogout}>LOGOUT</button>
         </ul>
         <div className="hamburger" onClick={() => setShow(!show)}>

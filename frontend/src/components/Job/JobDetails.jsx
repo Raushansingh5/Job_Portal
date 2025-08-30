@@ -1,31 +1,43 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 import { Context } from "../../main";
+
 const JobDetails = () => {
   const { id } = useParams();
-  const [job, setJob] = useState({});
-  const navigateTo = useNavigate();
-   const API_URL = import.meta.env.VITE_API_URL;
+  const [job, setJob] = useState(null);
+  const navigate = useNavigate();
+  const API_URL = import.meta.env.VITE_API_URL;
 
   const { isAuthorized, user } = useContext(Context);
 
+  
+  useEffect(() => {
+    if (!isAuthorized) {
+      navigate("/login");
+    }
+  }, [isAuthorized, navigate]);
+
+  
   useEffect(() => {
     axios
-      .get(`${API_URL}/api/v1/job/${id}`, {
-        withCredentials: true,
-      })
+      .get(`${API_URL}/api/v1/job/${id}`, { withCredentials: true })
       .then((res) => {
         setJob(res.data.job);
       })
-      .catch((error) => {
-        navigateTo("/notfound");
+      .catch(() => {
+        navigate("/notfound");
       });
-  }, []);
+  }, [id, API_URL, navigate]);
 
-  if (!isAuthorized) {
-    navigateTo("/login");
+  if (!job) {
+    return (
+      <section className="jobDetail page">
+        <div className="container">
+          <h3>Loading job details...</h3>
+        </div>
+      </section>
+    );
   }
 
   return (
@@ -34,7 +46,7 @@ const JobDetails = () => {
         <h3>Job Details</h3>
         <div className="banner">
           <p>
-            Title: <span> {job.title}</span>
+            Title: <span>{job.title}</span>
           </p>
           <p>
             Category: <span>{job.category}</span>
@@ -52,7 +64,12 @@ const JobDetails = () => {
             Description: <span>{job.description}</span>
           </p>
           <p>
-            Job Posted On: <span>{job.jobPostedOn}</span>
+            Job Posted On:{" "}
+            <span>
+              {job.jobPostedOn
+                ? new Date(job.jobPostedOn).toLocaleDateString()
+                : "N/A"}
+            </span>
           </p>
           <p>
             Salary:{" "}
@@ -64,10 +81,12 @@ const JobDetails = () => {
               </span>
             )}
           </p>
-          {user && user.role === "Employer" ? (
-            <></>
-          ) : (
-            <Link to={`/application/${job._id}`}>Apply Now</Link>
+
+         
+          {user && user.role === "Job Seeker" && (
+            <Link to={`/application/${job._id}`} className="apply-btn">
+              Apply Now
+            </Link>
           )}
         </div>
       </div>
