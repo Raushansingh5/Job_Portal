@@ -10,6 +10,8 @@ const MyApplications = () => {
   const [applications, setApplications] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [resumeImageUrl, setResumeImageUrl] = useState("");
+  const API_URL = import.meta.env.VITE_API_URL;
+  
 
   const { isAuthorized } = useContext(Context);
   const navigateTo = useNavigate();
@@ -18,7 +20,7 @@ const MyApplications = () => {
     try {
       if (user && user.role === "Employer") {
         axios
-          .get("http://localhost:4000/api/v1/application/employer/getall", {
+          .get(`${API_URL}/api/v1/application/employer/getall`, {
             withCredentials: true,
           })
           .then((res) => {

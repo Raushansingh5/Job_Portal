@@ -13,12 +13,14 @@ const Application = () => {
   const [resume, setResume] = useState(null);
   const [loading, setLoading] = useState(false);
   const [fileError, setFileError] = useState("");
+  const API_URL = import.meta.env.VITE_API_URL;
+  
 
   const { isAuthorized, user } = useContext(Context);
   const navigateTo = useNavigate();
   const { id } = useParams();
 
-  // Function to handle file input changes with validation
+  
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     setFileError("");
@@ -28,7 +30,7 @@ const Application = () => {
       return;
     }
     
-    // Check file type
+   
     const allowedTypes = ["image/png", "image/jpeg", "image/webp"];
     if (!allowedTypes.includes(file.type)) {
       setFileError("Please select a valid image file (PNG, JPEG, or WEBP)");
@@ -72,7 +74,7 @@ const Application = () => {
 
     try {
       const { data } = await axios.post(
-        "http://localhost:4000/api/v1/application/post",
+        `${API_URL}/api/v1/application/post`,
         formData,
         {
           withCredentials: true,

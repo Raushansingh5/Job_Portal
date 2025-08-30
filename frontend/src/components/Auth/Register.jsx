@@ -15,6 +15,8 @@ const Register = () => {
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("");
+  const API_URL = import.meta.env.VITE_API_URL;
+  
 
   const { isAuthorized, setIsAuthorized, user, setUser } = useContext(Context);
 
@@ -22,7 +24,7 @@ const Register = () => {
     e.preventDefault();
     try {
       const { data } = await axios.post(
-        "http://localhost:4000/api/v1/user/register",
+        `${API_URL}/api/v1/user/register`,
         { name, phone, email, role, password },
         {
           headers: {

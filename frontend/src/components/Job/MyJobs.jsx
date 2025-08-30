@@ -10,6 +10,7 @@ const MyJobs = () => {
   const [myJobs, setMyJobs] = useState([]);
   const [editingMode, setEditingMode] = useState(null);
   const { isAuthorized, user } = useContext(Context);
+   const API_URL = import.meta.env.VITE_API_URL;
 
   const navigateTo = useNavigate();
   //Fetching all jobs
@@ -17,7 +18,7 @@ const MyJobs = () => {
     const fetchJobs = async () => {
       try {
         const { data } = await axios.get(
-          "http://localhost:4000/api/v1/job/getmyjobs",
+          `${API_URL}/api/v1/job/getmyjobs`,
           { withCredentials: true }
         );
         setMyJobs(data.myJobs);
