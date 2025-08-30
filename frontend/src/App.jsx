@@ -17,10 +17,12 @@ import PostJob from "./components/Job/PostJob";
 import NotFound from "./components/NotFound/NotFound";
 import MyJobs from "./components/Job/MyJobs";
 
-const API_URL = import.meta.env.VITE_API_URL;
+
 
 const App = () => {
   const { isAuthorized, setIsAuthorized, setUser } = useContext(Context);
+  const API_URL = import.meta.env.VITE_API_URL;
+  
   useEffect(() => {
     const fetchUser = async () => {
       try {
