@@ -54,11 +54,11 @@ const App = () => {
     <BrowserRouter>
       <Navbar />
       <Routes>
-        {/* Public Routes */}
+       
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
 
-        {/* Protected Routes */}
+       
         <Route
           path="/"
           element={
@@ -116,7 +116,7 @@ const App = () => {
           }
         />
 
-        {/* Catch All */}
+        
         <Route path="*" element={<NotFound />} />
       </Routes>
       <Footer />

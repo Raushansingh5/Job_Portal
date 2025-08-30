@@ -13,7 +13,7 @@ function Footer() {
       <div>&copy; All Rights Reserved by Raushan.</div>
       <div className="social-icons">
         <a
-          href="https://github.com/exclusiveabhi"
+          href="#"
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Github"
@@ -21,7 +21,7 @@ function Footer() {
           <FaGithub />
         </a>
         <a
-          href="https://leetcode.com/u/exclusiveabhi/"
+          href="#"
           target="_blank"
           rel="noopener noreferrer"
           aria-label="LeetCode"
@@ -29,7 +29,7 @@ function Footer() {
           <SiLeetcode />
         </a>
         <a
-          href="https://www.linkedin.com/in/abhishek-rajput-/"
+          href="#"
           target="_blank"
           rel="noopener noreferrer"
           aria-label="LinkedIn"
@@ -37,7 +37,7 @@ function Footer() {
           <FaLinkedin />
         </a>
         <a
-          href="https://www.instagram.com/exclusiveabhi/"
+          href="#"
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Instagram"
